@@ -1,5 +1,6 @@
 const express = require('express');
 const server = express();
+const routers = require('./routers');
 
 const port = process.env.PORT || 8080;
 
@@ -16,6 +17,9 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(logger('dev'));
 server.use(compression());
 server.use(helmet());
+
+//routers: use
+server.use('/notes', routers.notes);
 
 
 server.get('/', (req, res) => res.status(200).send('works'));
