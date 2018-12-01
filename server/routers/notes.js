@@ -14,8 +14,8 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { text, location } = req.body;
-  const note = new Note({ text, location });
+  const { text, coords } = req.body;
+  const note = new Note({ text, coords });
   note.save();
   res.status(201).json({ message: 'successful' });
 });

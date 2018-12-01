@@ -6,7 +6,7 @@ const ids = [];
 class Note {
   constructor(data){
     this.text = data.text; 
-    this.location = data.location;
+    this.coords = data.coords;
     this.id = uuid.v4();
   }
 
@@ -25,20 +25,20 @@ class Note {
   static find(query) {
     if(!query) return ids.map(id => notes[id]);
     if(query.id) return [this.findById(query.id)];
-    if(query.location) return this._asArray()
+    if(query.coords) return this._asArray()
       .filter(note => 
-        (note.location.latitude === query.location.latitude) &&
-                (note.location.longitue === query.location.longitude));
+        (note.coords.latitude === query.coords.latitude) &&
+                (note.coords.longitue === query.coords.longitude));
     return [];
   }
 
   static findOne(query) {
     if(!query) return {};
     if(query.id) return this.findById(query.id);
-    if(query.location) return this._asArray()
+    if(query.coords) return this._asArray()
       .find(note => 
-        (note.location.latitude === query.location.latitude) &&
-                (note.location.longitude === query.location.longitude));
+        (note.coords.latitude === query.coords.latitude) &&
+                (note.coords.longitude === query.coords.longitude));
     return {};
   }
   static findByIdAndUpdate(id, updates, options) {
@@ -52,6 +52,8 @@ class Note {
   static findByIdAndRemove(id) {
     const note = notes[id];
     delete notes[id];
+    const idx = ids.findIndex(e => e === id);
+    ids.splice(idx, 1);
     return note;
   }
 

@@ -19,7 +19,7 @@ server.use(compression());
 server.use(helmet());
 
 //routers: use
-server.use('/notes', routers.notes);
+server.use('/api/notes', routers.notes);
 
 
 server.get('/', (req, res) => res.status(200).send('works'));
