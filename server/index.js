@@ -1,6 +1,17 @@
 const express = require('express');
 const server = express();
 const routers = require('./routers');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+//set up environment variables
+dotenv.config();
+
+//grab the mongo uri
+const { MONGO_URI } = process.env;
+
+//connect to the database
+mongoose.connect(MONGO_URI, { useNewUrlParser: true });
 
 const port = process.env.PORT || 8080;
 
