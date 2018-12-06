@@ -13,33 +13,34 @@ class HomeContainer extends Component {
     };
   }
 
-  componentDidMount() {
-    locationService.current()
-        .then(coords => {
-          this.setState({ coords: coords });
-        })
-        .catch(err => this.setState({ error: err }));
+  async componentDidMount() {
+    try {
+      const coords = await locationService.current();
+      this.setState({ coords: coords });
+    } catch (error) {
+      this.setState({ error });
+    }
   }
 
-  create = () =>  {
+  create = () => {
     noteService.create(this.state)
-        .then(_ => {
-          this.setState({
-            error: null,
-            text: ''
-          })
+      .then(_ => {
+        this.setState({
+          error: null,
+          text: ''
         })
-        .catch(err => {
-            this.setState({ error: err });
-        });
+      })
+      .catch(err => {
+        this.setState({ error: err });
+      });
   }
 
   render() {
-    return <HomeView 
-            {...this.state} 
-            {...this.props} 
-            create={this.create}
-            onTextChange={e => this.setState({ text: e.target.value })} />;
+    return <HomeView
+      {...this.state}
+      {...this.props}
+      create={this.create}
+      onTextChange={e => this.setState({ text: e.target.value })} />;
   }
 }
 
