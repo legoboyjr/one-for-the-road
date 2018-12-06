@@ -2,10 +2,11 @@ const express = require('express');
 const server = express();
 const routers = require('./routers');
 const mongoose = require('mongoose');
+const path = require('path');
 const dotenv = require('dotenv');
 
 //set up environment variables
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 //grab the mongo uri
 const { MONGO_URI } = process.env;
@@ -28,12 +29,11 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(logger('dev'));
 server.use(compression());
 server.use(helmet());
+const staticPath = path.resolve(__dirname, '../client/build');
+server.use(express.static(staticPath));
 
 //routers: use
 server.use('/api/notes', routers.notes);
-
-
-server.get('/', (req, res) => res.status(200).send('works'));
 
 server.listen(port, () => {
   console.log(`Now listening on port: ${port}`);
